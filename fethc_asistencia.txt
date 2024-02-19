@@ -1,0 +1,30 @@
+
+
+
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+include 'db_connection.php';
+
+// Consulta para obtener asistencias
+$sql = "SELECT * FROM rfid_data";
+$result = $conn->query($sql);
+
+// Mostrar resultados
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "RFID: " . $row["rfid_code"]. " - Fecha: " . $row["fecha"]. " - Hora: " . $row["hora"]. "<br>";
+    }
+} else {
+    echo "No hay asistencias registradas.";
+}
+
+echo "Consulta SQL: " . $sql;
+
+
+// Cerrar conexión
+$conn->close();
+?>
+

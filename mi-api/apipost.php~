@@ -1,0 +1,45 @@
+<?php
+header("Content-Type: application/json");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    $conn = new mysqli("localhost", "root", "", "asistenciatramvet");
+
+
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+  
+    $data = json_decode(file_get_contents('php://input'), true);
+
+ 
+    if (!empty($data['rfid_code']) && !empty($data['fecha']) && !empty($data['hora'])) {
+      
+        $sql = "INSERT INTO rfid_data ( rfid_code, fecha, hora) VALUES ( ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $data['rfid_code'], $data['fecha'], $data['hora']);
+
+   
+        if ($stmt->execute()) {
+            $response = array('status' => 'success', 'message' => 'Datos insertados correctamente');
+        } else {
+            $response = array('status' => 'error', 'message' => 'Error al insertar datos: ' . $stmt->error);
+        }
+
+     
+        $stmt->close();
+    } else {
+        $response = array('status' => 'error', 'message' => 'Faltan datos obligatorios');
+    }
+
+
+    $conn->close();
+} else {
+    $response = array('status' => 'error', 'message' => 'Método de solicitud no permitido');
+}
+
+
+echo json_encode($response);
+?>
+

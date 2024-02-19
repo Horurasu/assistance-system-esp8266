@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Asistencias Tramvet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        div {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        p {
+            margin: 0;
+        }
+	
+	div {
+		width: 30%;
+		display:flex;
+		justify-content: space-between;
+	}
+
+    </style>
+</head>
+<body>
+    <h2>Asistencias</h2>
+
+    <?php 
+        include 'fetch_asistencia_fernanda.php';
+
+        // Verificar si $asistencias es un array antes de usarlo en foreach
+        if (isset($asistencias) && is_array($asistencias)) {
+            foreach ($asistencias as $asistencia) {
+                echo '<div>';
+                echo '<strong>RFID:</strong> ' . $asistencia['RFID'] . '';
+                echo '<strong>Fecha:</strong> ' . $asistencia['Fecha'] . '';
+                echo '<strong>Hora:</strong> ' . $asistencia['Hora'] . '';
+                echo '</div>';
+            }
+        } else {
+            
+        }
+    ?>
+</body>
+</html>
